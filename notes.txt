@@ -1,0 +1,75 @@
+## Database planning
+
+Artist collection
+{
+    artist_id: 343553,
+    first_name: "Leonardo",
+    middle_name: null,
+    last_name: "DaVinci",
+    data_of_birth: "1658",
+    country: "Italy",
+    local: "FALSE"
+}
+
+Art collection 
+{
+    art_id: "6473884",
+    title: "Mona Lisa",
+    year: "1687",
+    period: "renaissance"'
+    type: "oil",
+    artist_id: 343553
+}
+
+
+## API planning
+
+#### ARTWORK
+
+Show all artworks
+GET /artwork
+
+See all artworks given a filter (ex: by perdiod, by artist)
+GET /artwork?period=renaissance
+
+See all artist given a filter (ex: by country)
+GET /artists?country=italy
+
+
+
+Create an artwork
+POST /artworks
+{data}
+
+
+See one artwork given ID
+GET /artwork/:ID
+
+
+Delete an artwork
+DELETE /artwork/:ID
+
+
+Update an artwork
+PUT /artwork/:ID
+{data}
+
+
+#### ARTIST
+
+Create an artist
+POST /artists
+{data}
+
+
+See one artist given ID
+GET /artists/:ID
+
+Delete an artist
+DELETE /artists/:ID
+
+Update an artist
+PUT /artists/:ID
+{data}
+
+
