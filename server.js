@@ -4,6 +4,9 @@ var bodyParser = require("body-parser");
 var app = express();
 const port = 3000;
 const mongodb = require("./mongo.js");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDoc = require("./swagger.json");
 
 // Use CORS middleware
 app.use(cors());
@@ -13,6 +16,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "CSE341 API",
+      version: "1.0.0",
+    },
+    servers: [{ url: process.env.URL }],
+  },
+  swaggerDefinition: swaggerDoc,
+  apis: ["./server.js"], // Use a global pattern to include all route files
+};
+
+const swaggerSpec = swaggerJSDoc(options);
 
 //Get all artists
 app.get("/artists", async (req, res) => {
@@ -57,6 +75,9 @@ app.post("/artists", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Swagger route
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Start the server and listen on port 3000
 app.listen(port, () => {

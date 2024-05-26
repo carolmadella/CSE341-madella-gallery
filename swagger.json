@@ -1,0 +1,359 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Interactive Art Gallery API",
+      "description": "API for managing artworks and artists in an interactive art gallery",
+      "version": "1.0.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/artwork": {
+        "get": {
+          "summary": "Get all artworks",
+          "description": "Get all artworks",
+          "parameters": [
+            {
+              "name": "period",
+              "in": "query",
+              "description": "Filter artworks by period",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of artworks",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Artwork"
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "post": {
+          "summary": "Create an artwork",
+          "description": "Create a new artwork",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Artwork object to be created",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Artwork"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Artwork created successfully"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/artwork/{id}": {
+        "get": {
+          "summary": "Get an artwork by ID",
+          "description": "Get an artwork by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artwork to retrieve"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artwork retrieved successfully",
+              "schema": {
+                "$ref": "#/definitions/Artwork"
+              }
+            },
+            "404": {
+              "description": "Artwork not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an artwork by ID",
+          "description": "Update an artwork by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artwork to update"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Artwork object to be updated",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Artwork"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artwork updated successfully"
+            },
+            "404": {
+              "description": "Artwork not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete an artwork by ID",
+          "description": "Delete an artwork by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artwork to delete"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artwork deleted successfully"
+            },
+            "404": {
+              "description": "Artwork not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/artist": {
+        "get": {
+          "summary": "Get all artists",
+          "description": "Get all artists",
+          "parameters": [
+            {
+              "name": "country",
+              "in": "query",
+              "description": "Filter artists by country",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of artists",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Artist"
+                }
+              }
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "post": {
+          "summary": "Create an artist",
+          "description": "Create a new artist",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Artist object to be created",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Artist"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Artist created successfully"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/artist/{id}": {
+        "get": {
+          "summary": "Get an artist by ID",
+          "description": "Get an artist by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artist to retrieve"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artist retrieved successfully",
+              "schema": {
+                "$ref": "#/definitions/Artist"
+              }
+            },
+            "404": {
+              "description": "Artist not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an artist by ID",
+          "description": "Update an artist by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artist to update"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Artist object to be updated",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Artist"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artist updated successfully"
+            },
+            "404": {
+              "description": "Artist not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete an artist by ID",
+          "description": "Delete an artist by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string",
+              "description": "ID of the artist to delete"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Artist deleted successfully"
+            },
+            "404": {
+              "description": "Artist not found"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Artwork": {
+        "type": "object",
+        "properties": {
+          "art_id": {
+            "type": "string",
+            "example": "6473884"
+          },
+          "title": {
+            "type": "string",
+            "example": "Mona Lisa"
+          },
+          "year": {
+            "type": "string",
+            "example": "1687"
+          },
+          "period": {
+            "type": "string",
+            "example": "renaissance"
+          },
+          "type": {
+            "type": "string",
+            "example": "oil"
+          },
+          "artist_id": {
+            "type": "integer",
+            "example": 343553
+          }
+        },
+        "required": ["art_id", "title", "year", "period", "type", "artist_id"]
+      },
+      "Artist": {
+        "type": "object",
+        "properties": {
+          "artist_id": {
+            "type": "integer",
+            "example": 343553
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Leonardo"
+          },
+          "middle_name": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "last_name": {
+            "type": "string",
+            "example": "DaVinci"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "example": "1658"
+          },
+          "country": {
+            "type": "string",
+            "example": "Italy"
+          },
+          "local": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": ["artist_id", "first_name", "last_name", "date_of_birth", "country", "local"]
+      }
+    }
+  }
+  
