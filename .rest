@@ -13,3 +13,21 @@ content-type: application/json
     "country": "Italy",
     "local": false
 }
+
+
+### RENDER
+GET https://cse341-madella-gallery.onrender.com/artists? HTTP/1.1
+
+### RENDER
+POST https://cse341-madella-gallery.onrender.com/artists HTTP/1.1
+content-type: application/json
+
+{
+    "artist_id": 343553,
+    "first_name": "Leonardo",
+    "middle_name": null,
+    "last_name": "DaVinci",
+    "date_of_birth": "1658",
+    "country": "Italy",
+    "local": false
+}
