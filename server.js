@@ -76,6 +76,31 @@ app.post("/artists", async (req, res) => {
   }
 });
 
+app.put('/artists/:id', (req, res) => {
+  const artistId = req.params.id;
+  const updateArtist = req.body;
+
+  if (dataStore[artistId]) {
+    dataStore[artistId] = { ...dataStore[artistId], ...updateArtist };
+    res.status(200).send(dataStore[artistId]);
+  } else {
+    res.status(404).send({ message: 'Artist not found' });
+  }
+});
+
+// DELETE route to delete a resource
+app.delete('/artists/:id', (req, res) => {
+  const artistID = req.params.id;
+
+  if (dataStore[artistID]) {
+    delete dataStore[artistId];
+    res.status(200).send({ message: 'Artist deleted successfully' });
+  } else {
+    res.status(404).send({ message: 'Artist not found' });
+  }
+});
+
+
 // Swagger route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
