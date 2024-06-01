@@ -101,7 +101,7 @@ app.put("/artists/:id", async (req, res) => {
       return res.status(404).json({ error: "artist not found" });
     }
 
-    res.status(201).json({
+    res.status(204).json({
       message: "artist updated successfully",
     });
   } catch (error) {
@@ -133,7 +133,7 @@ app.delete("/artists/:id", async (req, res, next) => {
       return res.status(404).json({ error: "artist not found" });
     }
 
-    res.status(201).json({ message: "artist deleted successfully" });
+    res.status(200).json({ message: "artist deleted successfully" });
   } catch (error) {
     console.error("Error deleting artist:", error);
     res.status(500).json({ error: "Internal server error" });
