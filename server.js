@@ -76,30 +76,69 @@ app.post("/artists", async (req, res) => {
   }
 });
 
-app.put('/artists/:id', (req, res) => {
+app.put("/artists/:id", async (req, res) => {
   const artistId = req.params.id;
-  const updateArtist = req.body;
+  const updatedArtist = req.body;
 
-  if (dataStore[artistId]) {
-    dataStore[artistId] = { ...dataStore[artistId], ...updateArtist };
-    res.status(200).send(dataStore[artistId]);
-  } else {
-    res.status(404).send({ message: 'Artist not found' });
+  //data validation
+  if (artistId == null || updatedArtist == null) {
+    return res.status(404).json({ error: "invalid input provided" });
+  }
+
+  try {
+    const db = await mongodb.connectDB();
+    const collection = db.collection("artists");
+
+    // Update the artist by ID
+    const result = await collection.findOneAndUpdate(
+      { _id: new mongodb.ObjectId(artistId) },
+      { $set: updatedArtist },
+      { returnNewDocument: true }
+    );
+
+    // Check if the artist was found and updated
+    if (!result) {
+      return res.status(404).json({ error: "artist not found" });
+    }
+
+    res.status(201).json({
+      message: "artist updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating artist:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
 // DELETE route to delete a resource
-app.delete('/artists/:id', (req, res) => {
-  const artistID = req.params.id;
+app.delete("/artists/:id", async (req, res, next) => {
+  const artistId = req.params.id;
 
-  if (dataStore[artistID]) {
-    delete dataStore[artistId];
-    res.status(200).send({ message: 'Artist deleted successfully' });
-  } else {
-    res.status(404).send({ message: 'Artist not found' });
+  //data validation
+  if (artistId == null) {
+    return res.status(404).json({ error: "invalid input provided" });
+  }
+  // copied from ChatGPT some of the code below
+  try {
+    const db = await mongodb.connectDB();
+    const collection = db.collection("artists");
+
+    // Delete the artist by ID
+    const result = await collection.findOneAndDelete({
+      _id: new mongodb.ObjectId(artistId),
+    });
+
+    // Check if the artist was found and deleted
+    if (!result) {
+      return res.status(404).json({ error: "artist not found" });
+    }
+
+    res.status(201).json({ message: "artist deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting artist:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 // Swagger route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

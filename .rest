@@ -15,6 +15,21 @@ content-type: application/json
 }
 
 
+### LOCALHOST DELETE
+DELETE http://localhost:3000/artists/66529a215ddc3820cae702f0 HTTP/1.1
+
+
+
+###LOCALHOST PUT
+PUT http://localhost:3000/artists/66529a2f5ddc3820cae73915 HTTP/1.1
+content-type: application/json
+
+{
+
+    "date_of_birth": "1658"
+    
+}
+
 ### RENDER
 GET https://cse341-madella-gallery.onrender.com/artists? HTTP/1.1
 
@@ -31,3 +46,5 @@ content-type: application/json
     "country": "Italy",
     "local": false
 }
+
+
