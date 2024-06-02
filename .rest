@@ -1,3 +1,9 @@
+#
+#
+# ARTIST
+# 
+#
+
 GET http://localhost:3000/artists? HTTP/1.1
 
 ### LOCALHOST
@@ -47,4 +53,55 @@ content-type: application/json
     "local": false
 }
 
+#
+#
+# ARTWORK
+# 
+#
 
+###
+GET http://localhost:3000/artworks? HTTP/1.1
+
+### LOCALHOST
+POST http://localhost:3000/artworks HTTP/1.1
+content-type: application/json
+
+{
+    "art_id": "6473884",
+    "title": "Mona Lisa",
+    "year": "1687",
+    "period": "renaissance",
+    "type": "oil",
+    "artist_id": 343553
+}
+
+
+### LOCALHOST DELETE
+DELETE http://localhost:3000/artworks/665bb5867f6ff0b213f1e072 HTTP/1.1
+
+
+
+###LOCALHOST PUT
+PUT http://localhost:3000/artworks/665bb5c57f6ff0b213f1e073 HTTP/1.1
+content-type: application/json
+
+{
+     "period": "renaissanceabs"
+}
+
+### RENDER
+GET https://cse341-madella-gallery.onrender.com/artworks? HTTP/1.1
+
+### RENDER
+POST https://cse341-madella-gallery.onrender.com/artworks HTTP/1.1
+content-type: application/json
+
+{
+    "artwork_id": 343553,
+    "first_name": "Leonardo",
+    "middle_name": null,
+    "last_name": "DaVinci",
+    "date_of_birth": "1658",
+    "country": "Italy",
+    "local": false
+}
