@@ -4,7 +4,12 @@
 # 
 #
 
+### LOCALHOST - GET ALL ARTISTS
 GET http://localhost:3000/artists? HTTP/1.1
+
+
+### LOCALHOST - GET ARTIST BY ID
+GET http://localhost:3000/artists/66529a2f5ddc3820cae73915 HTTP/1.1
 
 ### LOCALHOST
 POST http://localhost:3000/artists HTTP/1.1
@@ -59,8 +64,12 @@ content-type: application/json
 # 
 #
 
-###
-GET http://localhost:3000/artworks? HTTP/1.1
+### LOCALHOST - GET ALL ARTWORKS
+GET http://localhost:3000/artworks HTTP/1.1
+
+
+### LOCALHOST - GET ARTWORK BY ID
+GET http://localhost:3000/artworks/665bba6cb760c214cd89b685 HTTP/1.1
 
 ### LOCALHOST
 POST http://localhost:3000/artworks HTTP/1.1
@@ -68,7 +77,7 @@ content-type: application/json
 
 {
     "art_id": "6473884",
-    "title": "Mona Lisa",
+    "title": "John",
     "year": "1687",
     "period": "renaissance",
     "type": "oil",

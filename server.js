@@ -59,6 +59,32 @@ app.get("/artists", async (req, res) => {
   }
 });
 
+app.get("/artists/:id", async (req, res) => {
+
+  const artistId = req.params.id
+  
+  // copied from ChatGPT the code below
+  try {
+    const db = await mongodb.connectDB();
+
+    // Get a reference to the collection
+    const collection = db.collection("artists");
+
+    // Find documents in the collection
+    const artist = await collection.findOne({ _id: new mongodb.ObjectId(artistId) });
+
+    console.log(artist);
+
+    res.status(201).json(artist);
+  } catch (err) {
+    console.error("Error reading documents:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+
 app.post("/artists", async (req, res) => {
   // copied from ChatGPT some of the code below
   // Assuming the request body contains the artist information
@@ -167,6 +193,29 @@ app.get("/artworks", async (req, res) => {
     console.log(artworks);
 
     res.status(201).json(artworks);
+  } catch (err) {
+    console.error("Error reading documents:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/artworks/:id", async (req, res) => {
+
+  const artworkId = req.params.id
+
+  // copied from ChatGPT the code below
+  try {
+    const db = await mongodb.connectDB();
+
+    // Get a reference to the collection
+    const collection = db.collection("artworks");
+
+    // Find documents in the collection
+    const artwork = await collection.findOne({ _id: new mongodb.ObjectId(artworkId) });
+
+    console.log(artwork);
+
+    res.status(201).json(artwork);
   } catch (err) {
     console.error("Error reading documents:", err);
     res.status(500).json({ error: "Internal server error" });
