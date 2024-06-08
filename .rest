@@ -85,6 +85,7 @@ content-type: application/json
 }
 
 
+
 ### LOCALHOST DELETE
 DELETE http://localhost:3000/artworks/665bb5867f6ff0b213f1e072 HTTP/1.1
 
@@ -114,3 +115,36 @@ content-type: application/json
     "country": "Italy",
     "local": false
 }
+
+
+## Week 6 tests
+### RENDER
+POST https://cse341-madella-gallery.onrender.com/artworks HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Monalisa",
+    "year": "1687",
+    "period": "renaissance",
+    "type": "oil",
+    "artist_id": 343553
+}
+
+
+### RENDER
+PUT https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a964d3 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Some other art"
+}
+
+### GET
+GET https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a964d3 HTTP/1.1
+
+### GET
+DELETE https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a964d3 HTTP/1.1
+
+### GET
+GET https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a964d3 HTTP/1.1
+
