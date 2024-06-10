@@ -8,6 +8,17 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("./swagger.json");
 
+// Using help of chatGPT to implement the OAUTH with Google
+const axios = require('axios');
+const { OAuth2Client } = require('google-auth-library');
+
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const redirectUri = `${process.env.URL}/auth/google/callback`;
+
+const oauth2Client = new OAuth2Client(clientId, clientSecret, redirectUri);
+
+
 // Use CORS middleware
 app.use(cors());
 
@@ -31,6 +42,46 @@ const options = {
 };
 
 const swaggerSpec = swaggerJSDoc(options);
+
+/*******************
+ *
+ * OAUTH
+ *
+ *******************/
+
+// Route to start the OAuth flow
+app.get('/auth/google', (req, res) => {
+  const authUrl = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['profile', 'email']
+  });
+  res.redirect(authUrl);
+});
+ 
+// Route to handle the callback from Google
+app.get('/auth/google/callback', async (req, res) => {
+  const code = req.query.code;
+  try {
+    const googleResponse = await oauth2Client.getToken(code);
+    const tokens = googleResponse.tokens
+    oauth2Client.setCredentials(tokens);
+
+    // Use the access token to fetch user information
+    const response = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: {
+        Authorization: `Bearer ${tokens.access_token}`,
+      },
+    });
+    
+    const userData = response.data;
+    res.json(userData);
+  } catch (error) {
+    console.error('Error during Google OAuth callback:', error.message);
+    res.status(500).send('Authentication failed');
+  }
+});
+
+
 
 /*******************
  *
@@ -81,8 +132,6 @@ app.get("/artists/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 
 app.post("/artists", async (req, res) => {

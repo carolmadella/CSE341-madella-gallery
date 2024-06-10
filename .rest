@@ -147,4 +147,3 @@ DELETE https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a9
 
 ### GET
 GET https://cse341-madella-gallery.onrender.com/artworks/665be0c5eb5badee16a964d3 HTTP/1.1
-
