@@ -20,6 +20,33 @@ const JWT_SECRET = process.env.SECRET;
 
 const oauth2Client = new OAuth2Client(clientId, clientSecret, redirectUri);
 
+// Using help of chatGPT to implement the JWT for authorization
+// JWT token generation function
+function generateToken(user) {
+  return jwt.sign(user, JWT_SECRET, { expiresIn: '1h' });
+}
+
+// Middleware to authenticate JWT tokens
+function authenticateToken(req, res, next) {
+
+  const authHeader = req.headers.authorization;
+  
+  // check if there is something in the header
+  if (!authHeader) return res.sendStatus(401);
+  
+  // get the token from the header
+  const token = authHeader.split(' ')[1];
+  
+  // if no token, return error
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
 
 // Use CORS middleware
 app.use(cors());
@@ -52,7 +79,7 @@ const swaggerSpec = swaggerJSDoc(options);
  *******************/
 
 // Route to start the OAuth flow
-app.get('/auth/google', (req, res) => {
+app.get('/login', (req, res) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['profile', 'email']
@@ -64,8 +91,7 @@ app.get('/auth/google', (req, res) => {
 app.get('/auth/google/callback', async (req, res) => {
   const code = req.query.code;
   try {
-    const googleResponse = await oauth2Client.getToken(code);
-    const tokens = googleResponse.tokens
+    const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
     // Use the access token to fetch user information
@@ -74,15 +100,23 @@ app.get('/auth/google/callback', async (req, res) => {
         Authorization: `Bearer ${tokens.access_token}`,
       },
     });
-    
+
     const userData = response.data;
-    res.json(userData);
+    const user = {
+      email: userData.email,
+      name: userData.name,
+      picture: userData.picture
+    };
+
+    // Generate JWT token
+    const accessToken = generateToken(user);
+
+    res.json({ accessToken });
   } catch (error) {
     console.error('Error during Google OAuth callback:', error.message);
     res.status(500).send('Authentication failed');
   }
 });
-
 
 
 /*******************
@@ -91,8 +125,8 @@ app.get('/auth/google/callback', async (req, res) => {
  *
  *******************/
 
-//Get all artists
-app.get("/artists", async (req, res) => {
+//Get all artists with authorization
+app.get("/artists", authenticateToken, async (req, res) => {
   // copied from ChatGPT the code below
   try {
     const db = await mongodb.connectDB();
@@ -112,7 +146,7 @@ app.get("/artists", async (req, res) => {
   }
 });
 
-app.get("/artists/:id", async (req, res) => {
+app.get("/artists/:id", authenticateToken, async (req, res) => {
 
   const artistId = req.params.id
   
@@ -136,7 +170,7 @@ app.get("/artists/:id", async (req, res) => {
 });
 
 
-app.post("/artists", async (req, res) => {
+app.post("/artists", authenticateToken, async (req, res) => {
   // copied from ChatGPT some of the code below
   // Assuming the request body contains the artist information
   const newArtist = req.body;
@@ -159,7 +193,7 @@ app.post("/artists", async (req, res) => {
   }
 });
 
-app.put("/artists/:id", async (req, res) => {
+app.put("/artists/:id", authenticateToken, async (req, res) => {
   const artistId = req.params.id;
   const updatedArtist = req.body;
 
@@ -194,7 +228,7 @@ app.put("/artists/:id", async (req, res) => {
 });
 
 // DELETE route to delete a resource
-app.delete("/artists/:id", async (req, res, next) => {
+app.delete("/artists/:id", authenticateToken, async (req, res, next) => {
   const artistId = req.params.id;
 
   //data validation
