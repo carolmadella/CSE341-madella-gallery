@@ -7,6 +7,7 @@ const mongodb = require("./mongo.js");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("./swagger.json");
+const jwt = require('jsonwebtoken');
 
 // Using help of chatGPT to implement the OAUTH with Google
 const axios = require('axios');
@@ -15,6 +16,7 @@ const { OAuth2Client } = require('google-auth-library');
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = `${process.env.URL}/auth/google/callback`;
+const JWT_SECRET = process.env.SECRET;
 
 const oauth2Client = new OAuth2Client(clientId, clientSecret, redirectUri);
 
