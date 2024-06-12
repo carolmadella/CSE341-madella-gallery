@@ -264,7 +264,7 @@ app.delete("/artists/:id", authenticateToken, async (req, res, next) => {
  *******************/
 
 //Get all artworks
-app.get("/artworks", async (req, res) => {
+app.get("/artworks", authenticateToken, async (req, res) => {
   // copied from ChatGPT the code below
   try {
     const db = await mongodb.connectDB();
@@ -284,7 +284,7 @@ app.get("/artworks", async (req, res) => {
   }
 });
 
-app.get("/artworks/:id", async (req, res) => {
+app.get("/artworks/:id", authenticateToken, async (req, res) => {
 
   const artworkId = req.params.id
 
@@ -307,7 +307,7 @@ app.get("/artworks/:id", async (req, res) => {
   }
 });
 
-app.post("/artworks", async (req, res) => {
+app.post("/artworks", authenticateToken, async (req, res) => {
   // copied from ChatGPT some of the code below
   // Assuming the request body contains the artwork information
   const newArtwork = req.body;
@@ -330,7 +330,7 @@ app.post("/artworks", async (req, res) => {
   }
 });
 
-app.put("/artworks/:id", async (req, res) => {
+app.put("/artworks/:id", authenticateToken, async (req, res) => {
   const artworkId = req.params.id;
   const updatedArtwork = req.body;
 
@@ -365,7 +365,7 @@ app.put("/artworks/:id", async (req, res) => {
 });
 
 // DELETE route to delete a resource
-app.delete("/artworks/:id", async (req, res, next) => {
+app.delete("/artworks/:id", authenticateToken, async (req, res, next) => {
   const artworkId = req.params.id;
 
   //data validation
