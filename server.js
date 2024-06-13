@@ -91,6 +91,7 @@ app.get('/login', (req, res) => {
 app.get('/auth/google/callback', async (req, res) => {
   const code = req.query.code;
   try {
+    const db = await mongodb.connectDB();
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
@@ -105,8 +106,16 @@ app.get('/auth/google/callback', async (req, res) => {
     const user = {
       email: userData.email,
       name: userData.name,
-      picture: userData.picture
+      picture: userData.picture,
+      googleId: userData.sub,
     };
+
+    // Check if the user already exists
+    const existingUser = await db.collection('users').findOne({ googleId: user.googleId });
+    if (!existingUser) {
+      // Insert the new user into the database
+      await db.collection('users').insertOne(user);
+    }
 
     // Generate JWT token
     const accessToken = generateToken(user);
