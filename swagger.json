@@ -5,10 +5,10 @@
     "description": "API for managing artworks and artists in an interactive art gallery",
     "version": "1.0.0"
   },
-  "host": "https://cse341-madella-gallery.onrender.com",
+  "host": "cse341-madella-gallery.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "securityDefinitions": {
     "Bearer": {
